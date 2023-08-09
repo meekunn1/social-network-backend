@@ -1,11 +1,11 @@
 const { Schema, model } = require("mongoose");
-const reactionSchema = require("./reaction");
 
 const reactionSchema = new Schema(
   {
     reactionId: {
       type: Schema.Types.ObjectId,
       required: true,
+      // default: new Schema.Types.ObjectId,
     },
     reactionBody: {
       type: String,
@@ -33,6 +33,6 @@ reactionSchema.virtual("formattedDate").get(function () {
   return createdAt.toLocaleDateString();
 });
 
-const Thought = model("reaction", reactionSchema);
+// const Reaction = model("reaction", reactionSchema);
 
-module.exports = Thought;
+module.exports = reactionSchema;
