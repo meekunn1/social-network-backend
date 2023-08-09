@@ -6,10 +6,8 @@ const {
   deleteThought,
 } = require("../controllers/thoughtController");
 
-router.route("/").get(getAllUsers).post(postUser);
+router.route("/").get(getAllThoughts).post(postThought);
 
-router.route("/:userId").get(getUserId).delete(deleteUser);
-
-router.route("/:userId/friend/:friendId").put(putFriend).delete(removeFriend);
+router.route("/:thoughtId").get(getThoughtId).delete(deleteThought);
 
 module.exports = router;
