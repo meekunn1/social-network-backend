@@ -4,7 +4,7 @@ const validateEmail = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
 const userSchema = new Schema(
   {
-    user: {
+    username: {
       type: String,
       unique: true,
       required: true,
@@ -24,7 +24,6 @@ const userSchema = new Schema(
     toJSON: {
       virtuals: true,
     },
-    id: false,
   }
 );
 

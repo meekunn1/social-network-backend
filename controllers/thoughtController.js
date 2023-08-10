@@ -13,11 +13,12 @@ module.exports = {
     try {
       const thought = await Thought.findOne({
         _id: req.params.thoughId,
-      }).select("-__V");
+      });
 
       if (!thought) {
         return res.status(404).json({ message: "Thought ID does not exist" });
       }
+      res.json(thought);
     } catch (err) {
       res.status(500).json(err);
     }
@@ -32,7 +33,22 @@ module.exports = {
       if (!updateUser) {
         return res.status(404).json({ message: "User ID does not exist" });
       }
-      res.json(newThought);
+      res.json({ message: "Thought successfully created" });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  async putThought(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.body.thoughtId },
+        { $set: { thoughtText: req.body } }
+      );
+
+      if (!thought) {
+        return res.status(404).json({ message: "Thought ID does not exist" });
+      }
+      res.json({ message: "Thought successfully updated." });
     } catch (err) {
       res.status(500).json(err);
     }

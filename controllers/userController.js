@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongoose").Types;
 const { User, Thought } = require("../models");
 
 module.exports = {
@@ -11,13 +12,11 @@ module.exports = {
   },
   async getUserId(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.userId }).select(
-        "-__V"
-      );
-
+      const user = await User.findById(req.params.userId).select("-__v");
       if (!user) {
         return res.status(404).json({ message: "User ID does not exist" });
       }
+      res.json(user);
     } catch (err) {
       res.status(500).json(err);
     }
@@ -32,11 +31,11 @@ module.exports = {
   },
   async deleteUser(req, res) {
     try {
-      const user = await User.findOneAndRemove({ _id: req.param.userId });
+      const user = await User.findOneAndRemove({ _id: req.params.userId });
       if (!user) {
         return res.status(404).json({ message: "User ID does not exist" });
       }
-      const thought = await Thought.deleteMany({ username: req.param.userId });
+      const thought = await Thought.deleteMany({ username: req.params.userId });
       if (!thought) {
         return res
           .status(404)
@@ -50,8 +49,8 @@ module.exports = {
   async putFriend(req, res) {
     try {
       const newFriend = await User.findOneAndUpdate(
-        { _id: req.param.userId },
-        { $push: { friend: req.params.friendId } },
+        { _id: req.params.userId },
+        { $push: { friends: req.params.friendId } },
         { new: true }
       );
 
