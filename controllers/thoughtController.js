@@ -12,7 +12,7 @@ module.exports = {
   async getThoughtId(req, res) {
     try {
       const thought = await Thought.findOne({
-        _id: req.params.thoughId,
+        _id: req.params.thoughtId,
       });
 
       if (!thought) {
@@ -62,6 +62,42 @@ module.exports = {
         return res.status(404).json({ message: "Thought ID does not exist" });
       }
       res.json({ message: "Thought successfully deleted" });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  async postReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: req.body } },
+      );
+
+      if (!thought) {
+        return res
+          .status(404)
+          .json({ message: 'Thought not found' });
+      }
+
+      res.json({ message: 'Reaction added to Thought' });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  async deleteReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+      );
+
+      if (!thought) {
+        return res
+          .status(404)
+          .json({ message: 'ReactionId does not exist' });
+      }
+
+      res.json({ message: 'Reaction deleted' });
     } catch (err) {
       res.status(500).json(err);
     }
