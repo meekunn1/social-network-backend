@@ -4,7 +4,7 @@ const { User, Thought } = require("../models");
 module.exports = {
   async getAllUsers(req, res) {
     try {
-      const users = await User.find().select('-__v');
+      const users = await User.find().select("-__v");
       res.json(users);
     } catch (err) {
       res.status(500).json(err);
@@ -48,6 +48,10 @@ module.exports = {
   },
   async putFriend(req, res) {
     try {
+      const checkFriend = await User.findOne({ _id: req.params.userId });
+      if (checkFriend.friends.includes(req.params.friendId)) {
+        return res.json({ message: "User is already in friend list." });
+      }
       const newFriend = await User.findOneAndUpdate(
         { _id: req.params.userId },
         { $push: { friends: req.params.friendId } },
@@ -67,8 +71,8 @@ module.exports = {
   async removeFriend(req, res) {
     try {
       const newFriend = await User.findOneAndUpdate(
-        { _id: req.param.userId },
-        { $pull: { friend: req.params.friendId } },
+        { _id: req.params.userId },
+        { $pull: { friends: req.params.friendId } },
         { new: true }
       );
 
