@@ -1,12 +1,11 @@
 {
   "name": "social-network-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Social media back-end by Mongoose",
   "main": "server.js",
   "scripts": {
     "start": "node server",
     "dev": "nodemon server",
-    "seed": "node utils/seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
